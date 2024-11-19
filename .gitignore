@@ -1,0 +1,13 @@
+# Build files and directories
+build/
+Debug/
+Release/
+*.o
+*.d
+*.bin
+*.elf
+*.hex
+
+# IDE-specific files
+.settings/
+*.launch
