@@ -38,6 +38,7 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+volatile static uint32_t tickCounter = 0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -138,11 +139,15 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
+void SysTick_Handler(void)
+{
+	++tickCounter;
+}
 
-//void SysTick_Handler(void)
-//{
-///*  TimingDelay_Decrement(); */
-//}
+uint32_t Get_SysTickCounter(void)
+{
+	return(tickCounter);
+}
 
 /******************************************************************************/
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */
