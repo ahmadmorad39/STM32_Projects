@@ -28,34 +28,62 @@ SOFTWARE.
 */
 
 /* Includes */
-#include "inc/SysTick.h"
-#include "inc/gpio.h"
+#include "stm32f4xx.h"
+#include "stm32f4xx_it.h"
+#include "stm32f429i_discovery.h"
 
+/* Private macro */
+/* Private variables */
+/* Private function prototypes */
+void delay_ms(uint32_t wait_time_ms);
+/* Private functions */
+void delay_ms(uint32_t wait_time_ms)
+{
+	uint32_t startTick = Get_SysTickCounter();
+
+	while((Get_SysTickCounter() - startTick) < wait_time_ms);
+}
 /**
- * @brief   main function
- * @note
- * @param   none
- * @retval  none
- */
+**===========================================================================
+**
+**  Abstract: main program
+**
+**===========================================================================
+*/
 int main(void)
 {
-  SysTick_Init();
-  GPIO_Init_LED(EVAL_GREEN_LED);
+  /**
+  *  IMPORTANT NOTE!
+  *  The symbol VECT_TAB_SRAM needs to be defined when building the project
+  *  if code has been located to RAM and interrupts are used. 
+  *  Otherwise the interrupt table located in flash will be used.
+  *  See also the <system_*.c> file and how the SystemInit() function updates 
+  *  SCB->VTOR register.  
+  *  E.g.  SCB->VTOR = 0x20000000;  
+  */
+
+  /* TODO - Add your application code here */
+  SysTick_Config((uint32_t)180000); // Every ms get interrupt
+
+  STM_EVAL_LEDInit(LED3);
+  STM_EVAL_LEDInit(LED4);
+
+  STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_GPIO);
+
+
 
   /* Infinite loop */
-  while(1)
+  while (1)
   {
-    GPIO_TurnON_LED(EVAL_GREEN_LED_BITBAND);
-    SysTick_Delay(300);
+	  if (STM_EVAL_PBGetState(BUTTON_USER) == 1)
+	  {
+		  STM_EVAL_LEDToggle(LED3);
+		  STM_EVAL_LEDToggle(LED4);
 
-    GPIO_TurnOFF_LED(EVAL_GREEN_LED_BITBAND);
-    SysTick_Delay(700);
+		  delay_ms(500);
+	  }
   }
 }
-
-/**
- * @}
- */
 
 /*
  * Callback used by stm324xg_eval_i2c_ee.c.
