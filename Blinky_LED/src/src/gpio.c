@@ -39,8 +39,11 @@ void GPIO_Init_LED(Led_Type led)
 			/* Enable SYSCFG clock */
 			RCC->APB2ENR |= RCC_APB2LPENR_SYSCFGLPEN;
 
+			/* Enable compensation cell */
+			SYSCFG->CMPCR |= SYSCFG_CMPCR_CMP_PD;
+
 			/* Wait till compensation cell is ready */
-			//while((SYSCFG->CMPCR & SYSCFG_CMPCR_READY) != SYSCFG_CMPCR_READY);
+			while((SYSCFG->CMPCR & SYSCFG_CMPCR_READY) != SYSCFG_CMPCR_READY);
 
 			/* Select no pull */
 			GPIOG->PUPDR &= ~(GPIO_PUPDR_PUPDR13);
