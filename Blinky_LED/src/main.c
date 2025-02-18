@@ -33,6 +33,7 @@ SOFTWARE.
 #include "stm32f429i_discovery.h"
 #include "inc/gpio.h"
 #include "inc/SysTick.h"
+#include "inc/irq.h"
 
 /* Private macro */
 /* Private variables */
@@ -50,15 +51,24 @@ int main(void)
 
   /* TODO - Add your application code here */
   SysTick_Init();
+  IRQ_Init();
   GPIO_Init_LED(EVAL_GREEN_LED);
+  GPIO_Init_LED(EVAL_RED_LED);
+
+  /* Clear PRIMASK, enable IRQ*/
+  __enable_irq();
 
   /* Infinite loop */
   while (1)
   {
-	  GPIO_TurnON_LED(EVAL_GREEN_LED);
+	  /* Trigger LED ON interrupts */
+	  NVIC_SetPendingIRQ(GREEN_LED_ON_IRQ);
+	  NVIC_SetPendingIRQ(RED_LED_ON_IRQ);
 	  SysTick_Delay(300);
 
-	  GPIO_TurnOFF_LED(EVAL_GREEN_LED);
+	  /* Trigger LED OFF interrupts */
+	  NVIC->STIR = GREEN_LED_OFF_IRQ;
+	  NVIC->STIR = RED_LED_OFF_IRQ;
 	  SysTick_Delay(700);
 
   }

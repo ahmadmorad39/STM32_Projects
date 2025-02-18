@@ -29,6 +29,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
+#include "inc/gpio.h"
 
 /** @addtogroup Template_Project
   * @{
@@ -147,6 +148,38 @@ void SysTick_Handler(void)
 uint32_t Get_SysTickCounter(void)
 {
 	return(tickCounter);
+}
+
+/**
+ * @brief   This function handles EXTI0 interrupt request
+ */
+void EXTI0_IRQHandler(void)
+{
+	GPIO_TurnON_LED(EVAL_GREEN_LED);
+}
+
+/**
+ * @brief   This function handles EXTI1 interrupt request
+ */
+void EXTI1_IRQHandler(void)
+{
+	GPIO_TurnOFF_LED(EVAL_GREEN_LED);
+}
+
+/**
+ * @brief   This function handles EXTI2 interrupt request
+ */
+void EXTI2_IRQHandler(void)
+{
+	GPIO_TurnON_LED(EVAL_RED_LED);
+}
+
+/**
+ * @brief   This function handles EXTI3 interrupt request
+ */
+void EXTI3_IRQHandler(void)
+{
+	GPIO_TurnOFF_LED(EVAL_RED_LED);
 }
 
 /******************************************************************************/
