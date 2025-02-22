@@ -25,5 +25,3 @@ This project demonstrates how to use USART communication in an STM32 microcontro
 
 * STM32 HAL Library
 * Serial terminal emulator
-
-Serial terminal emulator
